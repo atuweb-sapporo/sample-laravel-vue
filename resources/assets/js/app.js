@@ -10,6 +10,7 @@ import http   from '@/js/services/http'
 
 require('@/js/bootstrap');
 require('@/js/global-defines');
+require('@/js/services/firebase');
 
 window.Vue = require('vue');
 
