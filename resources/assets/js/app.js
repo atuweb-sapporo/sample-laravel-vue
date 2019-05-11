@@ -9,6 +9,7 @@ import http   from '@/js/services/http'
  */
 
 require('@/js/bootstrap');
+require('@/js/global-defines');
 
 window.Vue = require('vue');
 

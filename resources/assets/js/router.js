@@ -3,10 +3,10 @@ import Router from 'vue-router'
 
 let routes = [];
 
-import Example from '@/js/components/Example'
+import IndexPage from '@/js/components/Pages/Index'
 routes.push({
   path: '/',
-  component: Example
+  component: IndexPage
 });
 
 Vue.use(Router);
