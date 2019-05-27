@@ -9,6 +9,18 @@ routes.push({
   component: IndexPage
 });
 
+import LoginPage from '@/js/components/Pages/Login'
+routes.push({
+  path: '/login',
+  component: LoginPage
+});
+
+import LogoutPage from '@/js/components/Pages/Logout'
+routes.push({
+  path: '/logout',
+  component: LogoutPage
+});
+
 Vue.use(Router);
 export default new Router({
   mode: 'history',

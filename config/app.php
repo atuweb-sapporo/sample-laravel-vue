@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Providers\FirebaseServiceProvider::class,
+        App\Providers\RepositoryProvider::class,
 
     ],
 
