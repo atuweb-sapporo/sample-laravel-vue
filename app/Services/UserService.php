@@ -19,11 +19,11 @@ class UserService implements UserServiceInterface
     /**
      * UserService constructor.
      *
-     * @param UserRepositoryInterface $userRepositoryInterface
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(UserRepositoryInterface $userRepositoryInterface)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->userRepo = $userRepositoryInterface;
+        $this->userRepo = $userRepository;
     }
 
 
