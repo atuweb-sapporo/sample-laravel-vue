@@ -38,6 +38,7 @@ export default {
     axios.interceptors.request.use(config => {
       config.headers['X-CSRF-TOKEN']     = document.getElementsByName('csrf-token')[0].content
       config.headers['X-Requested-With'] = 'XMLHttpRequest'
+      config.headers['Authorization']    = `Bearer ${localStorage.getItem('jwt-token')}`
       return config
     })
   }

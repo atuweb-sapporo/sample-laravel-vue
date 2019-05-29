@@ -45,6 +45,11 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'spa' => [
+            'driver' => 'bearer',
+            'provider' => 'users',
+        ],
     ],
 
     /*

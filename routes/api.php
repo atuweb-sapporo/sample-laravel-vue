@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['middleware' => 'api'], function() {
+Route::middleware(['api'])->group(function() {
     Route::post('/verify', 'LoginController@verify');
+});
+
+Route::middleware(['api', 'auth.bearer'])->group(function() {
+    Route::get('/me', 'LoginController@showUser');
 });

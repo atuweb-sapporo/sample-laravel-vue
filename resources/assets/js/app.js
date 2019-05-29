@@ -1,6 +1,7 @@
-import Vue    from 'vue'
-import router from '@/js/router'
-import http   from '@/js/services/http'
+import Vue       from 'vue'
+import router    from '@/js/router'
+import http      from '@/js/services/http'
+import userStore from '@/js/stores/userStore.js'
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -25,6 +26,7 @@ const app = new Vue({
   el: '#app',
   created () {
     http.init()
+    userStore.init()
   },
   render: h => h(require('@/js/app.vue')),
 }).$mount('#app');
