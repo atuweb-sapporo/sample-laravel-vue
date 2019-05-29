@@ -14,8 +14,8 @@ import footer from '@/js/components/Layouts/Footer'
 
 export default {
   components: {
-    headBar: header,
-    footBar: footer
+    'head-bar': header,
+    'foot-bar': footer
   }
 }
 </script>

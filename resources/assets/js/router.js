@@ -21,6 +21,13 @@ routes.push({
   component: LogoutPage
 });
 
+
+import PostEditPage from '@/js/components/Pages/Post/Edit'
+routes.push({
+  path: '/post/edit',
+  component: PostEditPage
+});
+
 Vue.use(Router);
 export default new Router({
   mode: 'history',
