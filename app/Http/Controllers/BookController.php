@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 
 use App\Services\BookSearchServiceInterface;
 use App\Services\BookServiceInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class BookController
@@ -29,5 +32,29 @@ class BookController extends Controller
     ) {
         $this->bookService       = $bookService;
         $this->bookSearchService = $bookSearchService;
+    }
+
+
+    /**
+     * リクエストに従って書籍を検索する
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return [
+                'books' => [],
+            ];
+        }
+
+        $searchValue = $request->input('value', '');
+        return [
+            'books' => $this->bookSearchService->exec($searchValue),
+        ];
     }
 }

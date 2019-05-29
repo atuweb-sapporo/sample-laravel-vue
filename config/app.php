@@ -232,4 +232,10 @@ return [
 
     ],
 
+    // extend application
+
+    'mock' => [
+        'book_search' => env('MOCK_BOOK_SEARCH', false),
+    ],
+
 ];
