@@ -10,7 +10,7 @@ use Kreait\Firebase\Auth\UserRecord AS FirebaseUser;
  * Class LoginController
  * @package App\Http\Controllers
  */
-class LoginController extends Controller
+class LoginController extends ApiController
 {
     /** @var UserServiceInterface */
     private $userService;

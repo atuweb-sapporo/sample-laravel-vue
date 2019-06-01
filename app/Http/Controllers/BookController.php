@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
  * Class BookController
  * @package App\Http\Controllers
  */
-class BookController extends Controller
+class BookController extends ApiController
 {
     /** @var BookServiceInterface */
     private $bookService;
