@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Validator;
  */
 class ReviewController extends ApiController
 {
+    /** @var int */
+    private const COUNT_PER_PAGE = 5;
+
     /** @var BookServiceInterface */
     private $bookService;
 
@@ -32,6 +35,21 @@ class ReviewController extends ApiController
     ) {
         $this->bookService   = $bookService;
         $this->reviewService = $reviewService;
+    }
+
+
+    /**
+     * 件数指定で一覧を取得する
+     *
+     * @param Request $request
+     * @param string $page
+     * @return array
+     */
+    public function fetchPage(Request $request, string $page)
+    {
+        return $this->success([
+            'items' => $this->reviewService->fetchList((int)$page, static::COUNT_PER_PAGE),
+        ]);
     }
 
 

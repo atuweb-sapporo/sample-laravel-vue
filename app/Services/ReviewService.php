@@ -1,8 +1,10 @@
 <?php
 namespace App\Services;
 
+use App\Models\Review;
 use App\Repositories\ReviewRepositoryInterface;
 use App\Exceptions\SqlExecuteException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -23,6 +25,20 @@ class ReviewService implements ReviewServiceInterface
     public function __construct(ReviewRepositoryInterface $reviewRepository)
     {
         $this->reviewRepo = $reviewRepository;
+    }
+
+
+    /**
+     * 指定件数取得する
+     *
+     * @param int $pageNo
+     * @param int $countPerPage
+     * @return Collection|Review[]
+     */
+    public function fetchList(int $pageNo, int $countPerPage): Collection
+    {
+        $offset = ($pageNo - 1) * $countPerPage;
+        return $this->reviewRepo->fetchList($countPerPage, $offset);
     }
 
 
