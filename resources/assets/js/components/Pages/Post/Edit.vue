@@ -3,9 +3,9 @@
     <div class="row">
       <div class="col-md-12 col-sm-12">
         <fieldset>
-        <legend>レビュー投稿</legend>
+          <legend>レビュー投稿</legend>
           <div class="form-group">
-            <label for="inputTitle" class="col-md-2 control-label">Book</label>
+            <label class="col-md-2 control-label">Book</label>
             <div class="col-md-10">
               <div v-show="bookSelected">
                 <div>
@@ -28,6 +28,32 @@
                 @close="closeSearchBook"
               ></book-search>
             </div>
+
+            <div :class="errorClassObject('comment')" class="form-group">
+              <label for="inputComment" class="col-md-2 control-label">コメント詳細</label>
+              <div class="col-md-10">
+                <textarea v-model="edit.comment" class="form-control" rows="3" id="inputComment"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-2 control-label"></label>
+              <div class="col-md-10">
+                <span v-for="n in 5" @click="setStar(n)"
+                  ><span v-show="n >  edit.star"><i class="far fa-star"></i></span
+                  ><span v-show="n <= edit.star"><i class="fas fa-star"></i></span
+                ></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-md-10 col-md-offset-2">
+                <button
+                  @click="doSubmit"
+                  :disabled=" isValid == false"
+                  type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
           </div>
 
         </fieldset>
@@ -38,45 +64,100 @@
 </template>
 
 <script>
-import modalBookSearch from '@/js/components/Pages/Post/BookSearch'
+  import http            from '@/js/services/http'
+  import ajaxStore       from '@/js/stores/ajaxStore'
+  import modalBookSearch from '@/js/components/Pages/Post/BookSearch'
+  import formHelper      from '@/js/components/Mixins/FormHelper'
 
-export default {
-  data() {
-    return {
-      book: null,
-      isSearch: false
-    }
-  },
-  created() {
-  },
-  computed: {
-    bookSelected() {
-      const book = this.book
-      return !!book
+  export default {
+    data() {
+      return {
+        book: null,
+        edit: {
+          comment: "",
+          star   : 0
+        },
+        isSearch: false
+      }
     },
-    bookTitle() {
-      const book = this.book
-      return (!!book && !!book.title) ? book.title : ''
+    computed: {
+      validation() {
+        const edit = this.edit
+        return {
+          book   : this.bookSelected,
+          comment: !!edit.comment,
+        }
+      },
+      bookSelected() {
+        const book = this.book
+        return !!book
+      },
+      bookTitle() {
+        const book = this.book
+        return (!!book && !!book.title) ? book.title : ''
+      },
+      bookImage() {
+        const book = this.book
+        return (!!book && !!book.image_link) ? book.image_link : ''
+      },
+      star() {
+        return this.edit.star
+      }
     },
-    bookImage() {
-      const book = this.book
-      return (!!book && !!book.image_link) ? book.image_link : ''
-    }
-  },
-  methods: {
-    searchBook() {
-      this.isSearch = true
+    methods: {
+      doSubmit() {
+        if (false === ajaxStore.setStartLoad()) {
+          return
+        }
+
+        const postData = {
+          book   : {
+            isbn_10: this.book.isbn_10,
+            isbn_13: this.book.isbn_13,
+          },
+          comment: this.edit.comment,
+          star   : this.edit.star
+        }
+        http.post(
+          'review/post',
+          postData,
+          () => {
+            // show dialog
+            ajaxStore.setFinishedLoad()
+          },
+          () => {
+            // handle_error
+            ajaxStore.setFinishedLoad()
+          }
+        )
+      },
+      searchBook() {
+        this.isSearch = true
+      },
+      closeSearchBook() {
+        this.isSearch = false
+      },
+      selectBook(book) {
+        this.book = book
+        this.closeSearchBook()
+      },
+      setStar(n) {
+        this.edit.star = n
+      }
     },
-    closeSearchBook() {
-      this.isSearch = false
+    components: {
+      'book-search': modalBookSearch,
     },
-    selectBook(book) {
-      this.book = book
-      this.closeSearchBook()
-    }
-  },
-  components: {
-    'book-search': modalBookSearch,
+    mixins: [
+      formHelper
+    ]
   }
-}
 </script>
+
+<style>
+.fa-star {
+  font-size: 3rem;
+  font-weight: bold;
+  color: darkorange;
+}
+</style>

@@ -37,11 +37,15 @@ class ApiController extends Controller
     /**
      * バリデートエラーをレスポンスする
      *
+     * @param strig $message
      * @return array
      */
-    protected function errorValidate()
+    protected function errorValidate($message = null)
     {
-        return $this->response(500, 'Validate error');
+        if (true === is_null($message)) {
+            $message = 'Validate error';
+        }
+        return $this->response(500, $message);
     }
 
 

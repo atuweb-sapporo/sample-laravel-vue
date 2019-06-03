@@ -20,5 +20,6 @@ Route::middleware(['api'])->group(function() {
 });
 
 Route::middleware(['api', 'auth.bearer'])->group(function() {
-    Route::get('/me', 'LoginController@showUser');
+    Route::get('/me',           'LoginController@showUser');
+    Route::post('/review/post', 'ReviewController@postNew');
 });
