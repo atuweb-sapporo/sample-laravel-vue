@@ -18,7 +18,7 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->string('title', 64);
             $table->string('subtitle', 64)->nullable();
-            $table->string('author', 128);
+            $table->string('author', 128)->nullable();
             $table->string('publisher', 32)->nullable();
             $table->string('release', 10)->nullable();
             $table->string('summary', 512);

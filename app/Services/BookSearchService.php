@@ -107,22 +107,33 @@ class BookSearchService implements BookSearchServiceInterface
             }
             $bookInfo = $book['volumeInfo'];
 
-            $author = '';
+            $isbn10 = null;
+            $isbn13 = null;
+            if (true === array_key_exists('industryIdentifiers', $bookInfo)) {
+                foreach ($bookInfo['industryIdentifiers'] as $identifier) {
+                    if ('ISBN_10' === $identifier['type']) {
+                        $isbn10 = $identifier['identifier'];
+                        break;
+                    }
+                    if ('ISBN_13' === $identifier['type']) {
+                        $isbn13 = $identifier['identifier'];
+                        break;
+                    }
+                }
+            }
+            if (true === is_null($isbn10) && true === is_null($isbn13)) {
+                // 識別子がなく特定が難しいため、取り扱わない
+                continue;
+            }
+
+            $author = null;
             if (true === array_key_exists('authors', $bookInfo)) {
                 $author = implode(',', $bookInfo['authors']);
             }
 
-            $isbn10   = null;
-            $isbn13   = null;
-            foreach ($bookInfo['industryIdentifiers'] as $identifier) {
-                if ('ISBN_10' === $identifier['type']) {
-                    $isbn10 = $identifier['identifier'];
-                    break;
-                }
-                if ('ISBN_13' === $identifier['type']) {
-                    $isbn13 = $identifier['identifier'];
-                    break;
-                }
+            $summary = null;
+            if (true === array_key_exists('description', $bookInfo)) {
+                $summary = $this->truncate($bookInfo['description'], 500);
             }
 
             $imageLink = null;
@@ -141,7 +152,7 @@ class BookSearchService implements BookSearchServiceInterface
                 'author'     => $author,
                 'publisher'  => $bookInfo['publisher'] ?? null,
                 'release'    => $bookInfo['publishedDate'] ?? null,
-                'summary'    => $bookInfo['description'] ?? null,
+                'summary'    => $summary,
                 'isbn_10'    => $isbn10,
                 'isbn_13'    => $isbn13,
                 'image_link' => $imageLink,
@@ -149,5 +160,23 @@ class BookSearchService implements BookSearchServiceInterface
             ];
         }
         return Collection::make($convertedBooks);
+    }
+
+
+    /**
+     * 文字列を指定長に丸める
+     *
+     * @param string $input
+     * @param int    $length
+     * @param string $trimMarker
+     * @return string
+     */
+    private function truncate(string $input, int $length = -1, string $trimMarker = '…'): string
+    {
+        $strLength = mb_strlen($input, 'UTF-8');
+        if ($length < 0 || $strLength <= $length) {
+            return $input;
+        }
+        return mb_substr($input, 0, $length - $strLength) . $trimMarker;
     }
 }

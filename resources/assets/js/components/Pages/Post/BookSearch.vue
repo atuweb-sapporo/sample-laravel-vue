@@ -63,7 +63,7 @@ export default {
     }
   },
   methods: {
-    async　doSearch() {
+    doSearch() {
       if (false === ajaxStore.setStartLoad()) {
         return
       }
@@ -82,7 +82,21 @@ export default {
         }
       )
     },
+    store(book) {
+      http.post(
+        'book/store',
+        {
+          book: book,
+        },
+        () => {
+        },
+        () => {
+          // handle_error
+        }
+      )
+    },
     select(book) {
+      this.store(book)
       this.$emit('select', book)
     },
     close() {

@@ -53,4 +53,14 @@ interface BookRepositoryInterface
      * @return bool
      */
     public function delete(int $id): bool;
+
+
+    /**
+     * ISBN 10 or 13 で取得
+     *
+     * @param string|null $isbn10
+     * @param string|null $isbn13
+     * @return Book|null
+     */
+    public function fetchByIsbn(?string $isbn10, ?string $isbn13): ?Book;
 }

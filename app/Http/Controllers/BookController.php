@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Services\BookSearchServiceInterface;
 use App\Services\BookServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -56,5 +55,40 @@ class BookController extends ApiController
         return [
             'books' => $this->bookSearchService->exec($searchValue),
         ];
+    }
+
+
+    /**
+     * 選択された書籍情報を登録する
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function store(Request $request)
+    {
+        $book      = $request->input('book', []);
+        $validator = Validator::make($book, [
+            'title'      => 'required|string',
+            'subtitle'   => 'string|nullable',
+            'author'     => 'string|nullable',
+            'publisher'  => 'string|nullable',
+            'release'    => 'string|max:10|nullable',
+            'summary'    => 'string|max:500|nullable',
+            'isbn_10'    => 'required_without:isbn_13|string|size:10|nullable',
+            'isbn_13'    => 'required_without:isbn_10|string|size:13|nullable',
+            'image_link' => 'string|max:200|nullable',
+            'language'   => 'string|max:5|nullable',
+        ]);
+        if ($validator->fails()) {
+            return $this->errorValidate();
+        }
+
+        $bookId = $this->bookService->storeAndFetchId($book);
+
+        return $this->success([
+            'book' => [
+                'id' => $bookId,
+            ],
+        ]);
     }
 }

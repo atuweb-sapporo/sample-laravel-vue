@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware(['api'])->group(function() {
     Route::post('/verify',      'LoginController@verify');
     Route::any('/book/search',  'BookController@search');
+    Route::post('/book/store',  'BookController@store');
 });
 
 Route::middleware(['api', 'auth.bearer'])->group(function() {

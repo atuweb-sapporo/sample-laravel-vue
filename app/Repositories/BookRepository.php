@@ -92,4 +92,23 @@ class BookRepository implements BookRepositoryInterface
     {
         return (1 === $this->orm->destroy($id));
     }
+
+
+    /**
+     * ISBN 10 or 13 で取得
+     *
+     * @param string|null $isbn10
+     * @param string|null $isbn13
+     * @return Book|null
+     */
+    public function fetchByIsbn(?string $isbn10, ?string $isbn13): ?Book
+    {
+        if (false === is_null($isbn10)) {
+            return $this->orm->where('isbn_10', $isbn10)->first();
+        }
+        if (false === is_null($isbn13)) {
+            return $this->orm->where('isbn_13', $isbn13)->first();
+        }
+        return null;
+    }
 }
