@@ -8,6 +8,11 @@ import userStore from '@/js/stores/userStore.js'
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import fontawesome from '@fortawesome/fontawesome';
+import fontawesome_regular from '@fortawesome/fontawesome-free-regular';
+import fontawesome_solid from '@fortawesome/fontawesome-free-solid';
+fontawesome.library.add(fontawesome_regular);
+fontawesome.library.add(fontawesome_solid);
 
 require('@/js/bootstrap');
 require('@/js/global-defines');
