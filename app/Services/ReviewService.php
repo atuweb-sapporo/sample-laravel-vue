@@ -46,18 +46,18 @@ class ReviewService implements ReviewServiceInterface
      * レビューを投稿する
      *
      * @param int    $user_id
-     * @param int    $book_id
+     * @param string $isbn
      * @param string $comment
      * @param int    $star
      * @return int|null
      */
-    public function postNew(int $user_id, int $book_id, string $comment, int $star): ?int
+    public function postNew(int $user_id, string $isbn, string $comment, int $star): ?int
     {
         DB::beginTransaction();
         try {
             $reviewId = $this->reviewRepo->create([
                 'user_id' => $user_id,
-                'book_id' => $book_id,
+                'isbn'     => $isbn,
                 'comment' => $comment,
                 'star'    => $star,
             ]);

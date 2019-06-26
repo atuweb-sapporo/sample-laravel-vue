@@ -47,6 +47,7 @@ class ReviewController extends ApiController
      */
     public function fetchPage(Request $request, string $page)
     {
+        // TODO ユーザ情報、書籍情報の結合
         return $this->success([
             'items' => $this->reviewService->fetchList((int)$page, static::COUNT_PER_PAGE),
         ]);
@@ -68,25 +69,18 @@ class ReviewController extends ApiController
         }
 
         $validator = Validator::make($request->all(), [
-            'book.isbn_10' => 'string|size:10|nullable',
-            'book.isbn_13' => 'integer|size:10|nullable',
-            'comment'      => 'required|string|min:1|max:1000',
-            'star'         => 'required|integer|between:1,5',
+            'isbn'     => 'required|string|min:10|max:13',
+            'comment'  => 'required|string|min:1|max:1000',
+            'star'     => 'required|integer|between:1,5',
         ]);
         if ($validator->fails()) {
             return $this->errorValidate();
         }
 
-        $isbn10 = $request->input('book.isbn_10', null);
-        $isbn13 = $request->input('book.isbn_13', null);
-        $book   = $this->bookService->fetchByIsbn($isbn10, $isbn13);
-        if (true === is_null($book)) {
-            return $this->errorValidate('not found by ISBN'. $isbn10 . $isbn13);
-        }
-
+        $isbn     = $request->input('isbn');
         $comment  = $request->input('comment');
         $star     = $request->input('star');
-        $reviewId = $this->reviewService->postNew($user->id, $book->id, $comment, $star);
+        $reviewId = $this->reviewService->postNew($user->id, $isbn, $comment, $star);
 
         return $this->success([
             'review' => [

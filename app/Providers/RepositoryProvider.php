@@ -1,8 +1,6 @@
 <?php
 namespace App\Providers;
 
-use App\Repositories\BookRepository;
-use App\Repositories\BookRepositoryInterface;
 use App\Repositories\ReviewRepository;
 use App\Repositories\ReviewRepositoryInterface;
 use App\Repositories\UserRepository;
@@ -32,7 +30,6 @@ class RepositoryProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(BookRepositoryInterface::class,   BookRepository::class);
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
         $this->app->bind(UserRepositoryInterface::class,   UserRepository::class);
     }

@@ -107,22 +107,9 @@ class BookSearchService implements BookSearchServiceInterface
             }
             $bookInfo = $book['volumeInfo'];
 
-            $isbn10 = null;
-            $isbn13 = null;
-            if (true === array_key_exists('industryIdentifiers', $bookInfo)) {
-                foreach ($bookInfo['industryIdentifiers'] as $identifier) {
-                    if ('ISBN_10' === $identifier['type']) {
-                        $isbn10 = $identifier['identifier'];
-                        break;
-                    }
-                    if ('ISBN_13' === $identifier['type']) {
-                        $isbn13 = $identifier['identifier'];
-                        break;
-                    }
-                }
-            }
-            if (true === is_null($isbn10) && true === is_null($isbn13)) {
-                // 識別子がなく特定が難しいため、取り扱わない
+            $isbn = $this->findIsbn($bookInfo);
+            if (true === is_null($isbn)) {
+                // 識別子がない場合は取り扱わない
                 continue;
             }
 
@@ -153,13 +140,52 @@ class BookSearchService implements BookSearchServiceInterface
                 'publisher'  => $bookInfo['publisher'] ?? null,
                 'release'    => $bookInfo['publishedDate'] ?? null,
                 'summary'    => $summary,
-                'isbn_10'    => $isbn10,
-                'isbn_13'    => $isbn13,
+                'isbn'       => $isbn,
                 'image_link' => $imageLink,
                 'language'   => $bookInfo['language'] ?? '',
             ];
         }
         return Collection::make($convertedBooks);
+    }
+
+
+    /**
+     * ISBNを返す
+     *
+     * ISBN 13 が設定されていればこれを優先する
+     * ISBN 13 が未設定 かつ ISBN 10 が設定されていれば ISBN 10 を返す
+     *
+     * @param array $bookInfo
+     * @return string|null
+     */
+    private function findIsbn(array $bookInfo): ?string
+    {
+        if (false === array_key_exists('industryIdentifiers', $bookInfo)) {
+            return null;
+        }
+
+        // ISBNの優先順
+        $priority = [
+            1 => 'ISBN_13',
+            2 => 'ISBN_10',
+        ];
+
+        $isbns = [];
+        foreach ($bookInfo['industryIdentifiers'] as $identifier) {
+            foreach ($priority as $index => $type) {
+                if ($type === $identifier['type']) {
+                    $isbns[$index] = $identifier['identifier'];
+                    break;
+                }
+            }
+        }
+
+        if (0 === count($isbns)) {
+            return null;
+        }
+
+        ksort($isbns);
+        return array_shift($isbns);
     }
 
 

@@ -111,10 +111,7 @@
         }
 
         const postData = {
-          book   : {
-            isbn_10: this.book.isbn_10,
-            isbn_13: this.book.isbn_13,
-          },
+          isbn   : this.book.isbn,
           comment: this.edit.comment,
           star   : this.edit.star
         }

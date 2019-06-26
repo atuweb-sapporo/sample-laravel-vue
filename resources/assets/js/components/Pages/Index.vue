@@ -4,7 +4,7 @@
       <article class="item-card">
         <div class="cover"></div>
         <div class="inner">
-          <div>{{ item.book_id }}</div>
+          <div>{{ item.isbn }}</div>
           <div>{{ item.user_id }}</div>
           <div>{{ item.comment }}</div>
         </div>
