@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <loader v-show="loadState.isLoading"></loader>
+    {{isLoading}}
+    <spinner v-show="isLoading"></spinner>
     <router-view></router-view>
   </div>
 </template>
 
+
 <script>
-import ajaxStore from '@/js/stores/ajaxStore'
-import loader from '@/js/components/Layouts/Loading'
+import spinner from '@/js/components/Layouts/Spinner'
 
 export default {
-  data() {
-    return {
-      loadState : ajaxStore.state
+  computed: {
+    isLoading() {
+      return this.$store.state.loading.isLoading
     }
   },
   components: {
-    loader: loader
+    spinner: spinner
   }
 }
 </script>

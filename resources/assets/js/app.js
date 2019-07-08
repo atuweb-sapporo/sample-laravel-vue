@@ -1,6 +1,7 @@
 import Vue       from 'vue'
 import router    from '@/js/router'
 import http      from '@/js/services/http'
+import store     from '@/js/stores/index'
 import userStore from '@/js/stores/userStore.js'
 
 /**
@@ -27,11 +28,12 @@ window.Vue = require('vue');
  */
 
 const app = new Vue({
-  router,
   el: '#app',
   created () {
-    http.init()
+    http.init();
     userStore.init()
   },
   render: h => h(require('@/js/app.vue')),
+  router,
+  store,
 }).$mount('#app');

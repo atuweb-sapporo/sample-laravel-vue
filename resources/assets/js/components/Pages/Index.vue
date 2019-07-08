@@ -14,56 +14,47 @@
 </template>
 
 <script>
-  import ajaxStore from '@/js/stores/ajaxStore'
-  import http from '@/js/services/http'
+import http from '@/js/services/http'
 
-  export default {
-    data () {
-      return {
-        items : [],
-        page  : 1
-      }
-    },
-    created() {
-      this.fetch()
-    },
-    mounted() {
-      this.watchScroll()
-    },
-    methods: {
-      async fetch () {
-        if (false === ajaxStore.setStartLoad()) {
-          return
-        }
-        http.get(
-          'reviews/page/'+ this.page,
-          res => {
-            this.page++
+export default {
+  data () {
+    return {
+      items : [],
+      page  : 1
+    }
+  },
+  created() {
+    this.fetch()
+  },
+  mounted() {
+    this.watchScroll()
+  },
+  methods: {
+    fetch() {
+      http.get(
+        'reviews/page/'+ this.page,
+        res => {
+          this.page++
 
-            const response = res.data
-            if (response.status == 200) {
-              this.items.push(...res.data.contents.items)
-            }
-
-            ajaxStore.setFinishedLoad()
-          },
-          () => {
-            ajaxStore.setFinishedLoad()
+          const response = res.data
+          if (response.status == 200) {
+            this.items.push(...res.data.contents.items)
           }
-        )
-      },
-      watchScroll () {
-        window.onscroll = _.debounce(this.fetchIfReachBottom, 300)
-      },
-      fetchIfReachBottom () {
-        const scrollingY = document.documentElement.scrollTop + window.innerHeight
-        const bottomY    = document.getElementById('reviews').offsetHeight
-        if (scrollingY >= bottomY) {
-          this.fetch()
         }
+      )
+    },
+    watchScroll() {
+      window.onscroll = _.debounce(this.fetchIfReachBottom, 300)
+    },
+    fetchIfReachBottom() {
+      const scrollingY = document.documentElement.scrollTop + window.innerHeight
+      const bottomY    = document.getElementById('reviews').offsetHeight
+      if (scrollingY >= bottomY) {
+        this.fetch()
       }
     }
   }
+}
 </script>
 
 <style>

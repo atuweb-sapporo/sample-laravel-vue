@@ -8,7 +8,6 @@
 <script>
 import http      from '@/js/services/http'
 import firebase  from 'firebase'
-import ajaxStore from '@/js/stores/ajaxStore'
 import userStore from '@/js/stores/userStore'
 
 export default {
@@ -27,14 +26,12 @@ export default {
   },
   methods: {
     signUp() {
-      if (false === ajaxStore.setStartLoad()) {
-        return
-      }
+      this.$store.commit('loading/start');
 
-      const self = this
+      const self = this;
 
       // MEMO signInWithPopup() は別タブを開く、スマホでは signInWithRedirect() のほうがベター
-      const provider = new firebase.auth.FacebookAuthProvider()
+      const provider = new firebase.auth.FacebookAuthProvider();
       firebase.auth().signInWithPopup(provider)
         .then(function(result) {
           // This gives you a Facebook Access Token. You can use it to access the Facebook API. now, not use
@@ -57,24 +54,24 @@ export default {
           if (this.uid !== res.data.uid) {
             this.handleError({
               message: "uid is unmatch",
-            })
+            });
             return
           }
 
-          userStore.setCurrentUser(res.data.user)
-          localStorage.setItem('jwt-token', this.token)
-          ajaxStore.setFinishedLoad()
+          userStore.setCurrentUser(res.data.user);
+          localStorage.setItem('jwt-token', this.token);
 
-          this.$router.push('/')
+          this.$router.push('/');
         },
         err => {
-          this.handleError(err)
+          this.handleError(err);
         }
       )
     },
     handleError(e) {
-      console.log('error')
-      console.log(e)
+      console.log('error');
+      console.log(e);
+      this.$store.commit('loading/finish');
     }
   }
 }

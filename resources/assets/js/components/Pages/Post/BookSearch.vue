@@ -43,9 +43,8 @@
 </template>
 
 <script>
-import http       from '@/js/services/http'
-import ajaxStore  from '@/js/stores/ajaxStore'
 import formHelper from '@/js/components/Mixins/FormHelper'
+import http       from '@/js/services/http'
 
 export default {
   data() {
@@ -64,9 +63,6 @@ export default {
   },
   methods: {
     doSearch() {
-      if (false === ajaxStore.setStartLoad()) {
-        return
-      }
       http.post(
         'book/search',
         {
@@ -74,11 +70,9 @@ export default {
         },
         res => {
           this.books = res.data.books
-          ajaxStore.setFinishedLoad()
         },
         () => {
           // handle_error
-          ajaxStore.setFinishedLoad()
         }
       )
     },

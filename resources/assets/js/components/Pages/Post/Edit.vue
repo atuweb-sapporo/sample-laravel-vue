@@ -64,91 +64,88 @@
 </template>
 
 <script>
-  import http            from '@/js/services/http'
-  import ajaxStore       from '@/js/stores/ajaxStore'
-  import modalBookSearch from '@/js/components/Pages/Post/BookSearch'
-  import formHelper      from '@/js/components/Mixins/FormHelper'
+import http            from '@/js/services/http'
+import modalBookSearch from '@/js/components/Pages/Post/BookSearch'
+import formHelper      from '@/js/components/Mixins/FormHelper'
 
-  export default {
-    data() {
+export default {
+  data() {
+    return {
+      book: null,
+      edit: {
+        comment: "",
+        star   : 0
+      },
+      isSearch: false
+    }
+  },
+  computed: {
+    validation() {
+      const edit = this.edit
       return {
-        book: null,
-        edit: {
-          comment: "",
-          star   : 0
-        },
-        isSearch: false
+        book   : this.bookSelected,
+        comment: !!edit.comment,
       }
     },
-    computed: {
-      validation() {
-        const edit = this.edit
-        return {
-          book   : this.bookSelected,
-          comment: !!edit.comment,
-        }
-      },
-      bookSelected() {
-        const book = this.book
-        return !!book
-      },
-      bookTitle() {
-        const book = this.book
-        return (!!book && !!book.title) ? book.title : ''
-      },
-      bookImage() {
-        const book = this.book
-        return (!!book && !!book.image_link) ? book.image_link : ''
-      },
-      star() {
-        return this.edit.star
-      }
+    bookSelected() {
+      const book = this.book
+      return !!book
     },
-    methods: {
-      doSubmit() {
-        if (false === ajaxStore.setStartLoad()) {
-          return
-        }
+    bookTitle() {
+      const book = this.book
+      return (!!book && !!book.title) ? book.title : ''
+    },
+    bookImage() {
+      const book = this.book
+      return (!!book && !!book.image_link) ? book.image_link : ''
+    },
+    star() {
+      return this.edit.star
+    }
+  },
+  methods: {
+    doSubmit() {
+      this.$store.commit('loading/start');
 
-        const postData = {
-          isbn   : this.book.isbn,
-          comment: this.edit.comment,
-          star   : this.edit.star
+      const postData = {
+        isbn   : this.book.isbn,
+        comment: this.edit.comment,
+        star   : this.edit.star
+      };
+      http.post(
+        'review/post',
+        postData,
+        () => {
+          // show dialog
+          this.$store.commit('loading/finish');
+        },
+        () => {
+          // handle_error
+          this.$store.commit('loading/finish');
         }
-        http.post(
-          'review/post',
-          postData,
-          () => {
-            // show dialog
-            ajaxStore.setFinishedLoad()
-          },
-          () => {
-            // handle_error
-            ajaxStore.setFinishedLoad()
-          }
-        )
-      },
-      searchBook() {
-        this.isSearch = true
-      },
-      closeSearchBook() {
-        this.isSearch = false
-      },
-      selectBook(book) {
-        this.book = book
-        this.closeSearchBook()
-      },
-      setStar(n) {
-        this.edit.star = n
-      }
+      )
     },
-    components: {
-      'book-search': modalBookSearch,
+    searchBook() {
+      this.isSearch = true
     },
-    mixins: [
-      formHelper
-    ]
-  }
+    closeSearchBook() {
+      this.isSearch = false
+    },
+    selectBook(book) {
+      this.book = book
+      this.closeSearchBook()
+    },
+    setStar(n) {
+      this.edit.star = n
+    }
+  },
+  components: {
+    'book-search': modalBookSearch,
+  },
+  mixins: [
+    formHelper
+  ]
+}
 </script>
 
 <style>
