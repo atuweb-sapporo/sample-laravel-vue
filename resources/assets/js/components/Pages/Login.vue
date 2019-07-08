@@ -20,7 +20,7 @@ export default {
   watch: {
     token: function(val) {
       if (val) {
-        this.verify()
+        this.verify();
       }
     }
   },
@@ -37,8 +37,8 @@ export default {
           // This gives you a Facebook Access Token. You can use it to access the Facebook API. now, not use
           const facebookAccessToken = result.credential.accessToken
 
-          self.uid   = result.user.uid
-          self.token = result.user['_lat']
+          self.uid   = result.user.uid;
+          self.token = result.user['_lat'];
         })
         .catch(function(error) {
           self.handleError(error)
@@ -53,9 +53,9 @@ export default {
         res => {
           if (this.uid !== res.data.uid) {
             this.handleError({
-              message: "uid is unmatch",
+              message: "uid is unmatch"
             });
-            return
+            return;
           }
 
           userStore.setCurrentUser(res.data.user);

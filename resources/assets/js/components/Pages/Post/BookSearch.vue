@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     validation() {
-      const searchValue = this.searchValue
+      const searchValue = this.searchValue;
       return {
         search_value: !!searchValue
       }
@@ -67,10 +67,10 @@ export default {
       http.post(
         'book/search',
         {
-          value: this.searchValue,
+          value: this.searchValue
         },
         res => {
-          this.books = res.data.books
+          this.books = res.data.books;
         },
         () => {
           // handle_error
@@ -81,10 +81,10 @@ export default {
       )
     },
     select(book) {
-      this.$emit('select', book)
+      this.$emit('select', book);
     },
     close() {
-      this.$emit('close')
+      this.$emit('close');
     }
   },
   mixins: [

@@ -10,11 +10,11 @@ import userStore from '@/js/stores/userStore'
 
 export default {
   created() {
-    firebase.auth().signOut()
-    userStore.setCurrentUser({})
-    localStorage.removeItem('jwt-token')
+    firebase.auth().signOut();
+    userStore.setCurrentUser({});
+    localStorage.removeItem('jwt-token');
 
-    this.$router.push('/')
+    this.$router.push('/');
   }
 }
 </script>

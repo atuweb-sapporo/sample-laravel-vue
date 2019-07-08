@@ -1,22 +1,36 @@
 <template>
   <div>
-    <div id="circleG" class="center-middle">
-      <div id="circleG_1" class="circleG"></div>
-      <div id="circleG_2" class="circleG"></div>
-      <div id="circleG_3" class="circleG"></div>
+    <div class="spinner">
+      <div id="circleG" class="center-middle">
+        <div id="circleG_1" class="circleG"></div>
+        <div id="circleG_2" class="circleG"></div>
+        <div id="circleG_3" class="circleG"></div>
+      </div>
+      <div style="width:100%;height:100%;"></div>
     </div>
-    <div style="width:100%;height:100%;"></div>
   </div>
 </template>
 
 <style>
-.center-middle {
+.spinner {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   margin: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,.3);
+  z-index: 10000;
+}
+
+.center-middle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100px;
   height: 100px;
 }

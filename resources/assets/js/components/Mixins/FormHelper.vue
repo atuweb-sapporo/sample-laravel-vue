@@ -2,12 +2,12 @@
 export default {
   computed: {
     isValid() {
-      const validation = this.validation
+      const validation = this.validation;
       return Object
         .keys(validation)
         .every(function (key) {
-          return validation[key]
-        })
+          return validation[key];
+        });
     }
   },
   methods: {
@@ -16,7 +16,7 @@ export default {
         'has-error': (!this.validation[key])
       }
     }
-  },
+  }
 }
 </script>
 

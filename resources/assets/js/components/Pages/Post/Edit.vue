@@ -81,26 +81,26 @@ export default {
   },
   computed: {
     validation() {
-      const edit = this.edit
+      const edit = this.edit;
       return {
         book   : this.bookSelected,
-        comment: !!edit.comment,
+        comment: !!edit.comment
       }
     },
     bookSelected() {
-      const book = this.book
-      return !!book
+      const book = this.book;
+      return !!book;
     },
     bookTitle() {
-      const book = this.book
-      return (!!book && !!book.title) ? book.title : ''
+      const book = this.book;
+      return (!!book && !!book.title) ? book.title : '';
     },
     bookImage() {
-      const book = this.book
-      return (!!book && !!book.image_link) ? book.image_link : ''
+      const book = this.book;
+      return (!!book && !!book.image_link) ? book.image_link : '';
     },
     star() {
-      return this.edit.star
+      return this.edit.star;
     }
   },
   methods: {
@@ -127,21 +127,21 @@ export default {
       )
     },
     searchBook() {
-      this.isSearch = true
+      this.isSearch = true;
     },
     closeSearchBook() {
-      this.isSearch = false
+      this.isSearch = false;
     },
     selectBook(book) {
-      this.book = book
-      this.closeSearchBook()
+      this.book = book;
+      this.closeSearchBook();
     },
     setStar(n) {
-      this.edit.star = n
+      this.edit.star = n;
     }
   },
   components: {
-    'book-search': modalBookSearch,
+    'book-search': modalBookSearch
   },
   mixins: [
     formHelper

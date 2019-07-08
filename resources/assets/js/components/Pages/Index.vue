@@ -24,10 +24,13 @@ export default {
     }
   },
   created() {
-    this.fetch()
+    this.fetch();
   },
   mounted() {
-    this.watchScroll()
+    this.watchScroll();
+  },
+  destroyed() {
+    this.unwatchScroll();
   },
   methods: {
     fetch() {
@@ -36,11 +39,11 @@ export default {
       http.get(
         'reviews/page/'+ this.page,
         res => {
-          this.page++
+          this.page++;
 
-          const response = res.data
+          const response = res.data;
           if (response.status == 200) {
-            this.items.push(...res.data.contents.items)
+            this.items.push(...res.data.contents.items);
           }
         },
         null,
@@ -52,11 +55,14 @@ export default {
     watchScroll() {
       window.onscroll = _.debounce(this.fetchIfReachBottom, 300)
     },
+    unwatchScroll() {
+      window.onscroll = null;
+    },
     fetchIfReachBottom() {
-      const scrollingY = document.documentElement.scrollTop + window.innerHeight
-      const bottomY    = document.getElementById('reviews').offsetHeight
+      const scrollingY = document.documentElement.scrollTop + window.innerHeight;
+      const bottomY    = document.getElementById('reviews').offsetHeight;
       if (scrollingY >= bottomY) {
-        this.fetch()
+        this.fetch();
       }
     }
   }
@@ -64,14 +70,14 @@ export default {
 </script>
 
 <style>
-  .item-card {
-    margin: 2rem 0;
-    padding: 12rem;
-    height: 4rem;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-  }
+.item-card {
+  margin: 2rem 0;
+  padding: 12rem;
+  height: 4rem;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
 </style>
