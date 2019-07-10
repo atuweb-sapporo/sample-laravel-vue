@@ -63,6 +63,7 @@ export default {
   },
   methods: {
     doSearch() {
+      this.$store.commit('loading/start');
       http.post(
         'book/search',
         {
@@ -73,6 +74,9 @@ export default {
         },
         () => {
           // handle_error
+        },
+        () => {
+          this.$store.commit('loading/finish');
         }
       )
     },

@@ -117,10 +117,11 @@ export default {
         postData,
         () => {
           // show dialog
-          this.$store.commit('loading/finish');
         },
         () => {
           // handle_error
+        },
+        () => {
           this.$store.commit('loading/finish');
         }
       )

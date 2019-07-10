@@ -31,6 +31,8 @@ export default {
   },
   methods: {
     fetch() {
+      this.$store.commit('loading/start');
+
       http.get(
         'reviews/page/'+ this.page,
         res => {
@@ -40,6 +42,10 @@ export default {
           if (response.status == 200) {
             this.items.push(...res.data.contents.items)
           }
+        },
+        null,
+        () => {
+          this.$store.commit('loading/finish');
         }
       )
     },
